@@ -1,0 +1,7 @@
+ALB,32767,True
+Lai, 249,True
+Temp,,False
+MODIS,,True
+Smerge,,True
+Cope,,True
+PPT,,False

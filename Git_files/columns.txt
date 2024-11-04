@@ -1,0 +1,1 @@
+Clay,Sand,Silt,Elevation,Aspect,Slope,Lai,SMERGE,MODIS,Albedo,Temp,Date,ML_,PageName,Cope,PPT

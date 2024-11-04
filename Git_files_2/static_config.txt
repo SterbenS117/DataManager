@@ -1,0 +1,6 @@
+Clay,False
+Sand,False
+Silt,False
+Slope,False
+Elevation,False
+Aspect,True
