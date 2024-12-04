@@ -24,6 +24,6 @@ def merge_csv_files(directory_path, output_filename):
     return combined_df
 
 # Example usage
-directory_path = '/mnt/e/BigRun/P2/GBR/'  # Replace this with your directory path
-output_filename = '/mnt/e/BigRun/P2/GBR_BigRunWS3_CO_500.csv'  # Name of the output file
+directory_path = r'E:\BigRun\T3\RF'  # Replace this with your directory path
+output_filename = r'E:\BigRun\T3\RF_BigRunWS_V6_T_500.csv'  # Name of the output file
 df = merge_csv_files(directory_path, output_filename)

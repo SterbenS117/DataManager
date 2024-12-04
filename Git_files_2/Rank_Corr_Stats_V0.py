@@ -77,45 +77,46 @@ def create_correction_matrix(df):
     return corr_matrix
 
 
-hist_monthly_average = pd.read_csv(r"E:\BigRun\anamoly_calculated_dataV4_500.csv", engine='pyarrow')
+#hist_monthly_average = pd.read_csv(r'E:\share\BIgRun\Watershed_Cal\WS3\anamoly_calculated_dataV4_500.csv', engine='pyarrow')
 
 #data = pd.read_csv(r"E:\share\BIgRun\Watershed_Cal\2\RF_BigRunWS4_500.csv", engine='pyarrow')
 #data = pd.read_csv(r"E:\share\BIgRun\Watershed_Cal\4\GBR_BigRunWS5_1_500.csv", engine='pyarrow')
-#data = pd.read_csv(r"E:\BigRun\T2\GBR_BigRunWS_V5_T2_500.csv", engine='pyarrow')
-data = pd.read_csv(r"E:\BigRun\T2\RF_BigRunWS_V5_T2_500.csv", engine='pyarrow')
+data = pd.read_csv(r"E:\BigRun\T3\RF_BigRunWS_V6_T_500.csv", engine='pyarrow')
 try:
     data.drop(columns=['PPT'], inplace=True)
 except:
     print()
+
+data.dropna(inplace=True)
 
 data['Date'] = pd.to_datetime(data['Date'], format="%Y-%m-%d")
 data['Month'] = data['Date'].dt.month
 data['Year'] = data['Date'].dt.year
 
 data = data[data['Year'] < 2018]
-data.dropna(inplace=True)
+#data.dropna(inplace=True)
 
-data['Soil'] = data['Sand'] + data['Silt'] + data['Clay']
-data = data[data['Soil'] >= 99.99]
+# data['Soil'] = data['Sand'] + data['Silt'] + data['Clay']
+# data = data[data['Soil'] >= 99.99]
 #print(data.dtypes)
-ml_month_ave = data[['ML_','Year','Month','PageName']].groupby(['Year', 'Month','PageName']).mean()
-ml_month_ave.reset_index(inplace=True)
-hist_ml_month_ave = ml_month_ave[['ML_','Month','PageName']].groupby(['Month','PageName']).mean()#.reset_index()
+month_ave = data[['AHRR','SMERGE','ML_','Year','Month','PageName']].groupby(['Year', 'Month','PageName']).mean()
+month_ave.reset_index(inplace=True)
 
 
+hist_month_ave = month_ave[['AHRR','SMERGE','ML_','Month','PageName']].groupby(['Month','PageName']).mean()
+hist_month_ave.reset_index(inplace=True)
 
-hist_ml_month_ave.reset_index(inplace=True)
+hist_month_ave.rename(columns={'ML_': 'ML_M'}, inplace=True)
+hist_month_ave.rename(columns={'SMERGE': 'SMERGE_M'}, inplace=True)
+hist_month_ave.rename(columns={'AHRR': 'AHRR_M'}, inplace=True)
 
-hist_ml_month_ave.rename(columns={'ML_': 'ML_M'}, inplace=True)
+data_t = data.merge(hist_month_ave, on= ['PageName', 'Month'])
 
-data_m = data.merge(hist_ml_month_ave, on= ['PageName', 'Month'])
 
-data_t = data_m.merge(hist_monthly_average, on= ['PageName', 'Month'])
-
-data_t.drop(columns = [''], inplace=True)
+#data_t.drop(columns = [''], inplace=True)
 
 data_t['SMERGE_A'] = data_t['SMERGE'] - data_t['SMERGE_M']
-data_t['ML_A'] = data_t['ML_'] - data_t['SMERGE_M']# data_t['ML_M']
+data_t['ML_A'] = data_t['ML_'] - data_t['ML_M']
 data_t['AHRR_A'] = data_t['AHRR'] - data_t['AHRR_M']
 
 data_t = data_t[data_t['Month'] > 5]
@@ -142,7 +143,7 @@ kendall_corr, kendall_p_value = kendalltau(x, y)
 print(f"Kendall's tau correlation coefficient: {kendall_corr}")
 print(f"Kendall's p-value: {kendall_p_value}")
 print('')
-interpret_correlation(spearman_corr, spearman_p_value, 'SMERGE_A')
+interpret_correlation(spearman_corr, spearman_p_value, 'SMERGE')
 
 d = data_t.groupby(['Month', 'Year']).agg(avg_AHRR_A=('AHRR_A', 'mean'), avg_ML_A=('ML_A', 'mean')).reset_index()
 # Sample data
@@ -161,6 +162,6 @@ print(f"Kendall's p-value: {kendall_p_value}")
 print('')
 interpret_correlation(spearman_corr, spearman_p_value, 'ML_A')
 
-
-corr = create_correction_matrix(data_t)
-print(corr)
+#
+# corr = create_correction_matrix(data_t)
+# print(corr)
