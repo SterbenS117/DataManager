@@ -31,6 +31,6 @@ def average_csv_by_index(directory_path, output_filename):
 
 
 # Example usage
-directory_path = r'E:\BigRun\L\RF_Sense'  # Replace this with your directory path
-output_filename = 'RF_BigRunWS_V5_L_500_IMMD.csv'  # Name of the output file
+directory_path = r'E:\BigRun\2025\WS\Sense\RF'  # Replace this with your directory path
+output_filename = 'RF_BigRunWS_WS6PD_500_IMMD.csv'  # Name of the output file
 average_csv_by_index(directory_path, output_filename)

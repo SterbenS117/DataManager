@@ -95,7 +95,7 @@ def rank_corr(data, hist_monthly_average):
 
     data_t.drop(columns=[''], inplace=True)
 
-    data_t['SMERGE_A'] = data_t['SMERGE'] - data_t['SMERGE_M']
+    data_t['SMERGE_A'] = data_t['Smerge'] - data_t['SMERGE_M']
     data_t['ML_A'] = data_t['ML_'] - data_t['SMERGE_M']  # data_t['ML_M']
     data_t['AHRR_A'] = data_t['AHRR'] - data_t['AHRR_M']
 
@@ -142,7 +142,7 @@ def rank_corr(data, hist_monthly_average):
     print('')
     interpret_correlation(spearman_corr, spearman_p_value, 'ML_A')
 
-hist_monthly_average = pd.read_csv(r"E:\BigRun\anamoly_calculated_dataV4_500.csv", engine='pyarrow')
+hist_month_ave = pd.read_csv(r"E:\BigRun\2025_Big\anamoly_calculated_dataV5_500.csv", engine='pyarrow')
 
 landC_2008 = pd.read_csv(r"E:\BigRun\Land_Cover\grid_500_landcover2008.csv", engine='pyarrow').rename(columns={'PAGENAME': 'PageName'})
 landC_2011 = pd.read_csv(r"E:\BigRun\Land_Cover\grid_500_landcover2011.csv", engine='pyarrow').rename(columns={'PAGENAME': 'PageName'})
@@ -153,7 +153,7 @@ landC_2019 = pd.read_csv(r"E:\BigRun\Land_Cover\grid_500_landcover2019.csv", eng
 
 #data = pd.read_csv(r"E:\share\BIgRun\Watershed_Cal\2\RF_BigRunWS4_500.csv", engine='pyarrow')
 #data = pd.read_csv(r"E:\share\BIgRun\Watershed_Cal\4\GBR_BigRunWS5_1_500.csv", engine='pyarrow')
-data = pd.read_csv(r"E:\BigRun\T2\RF_BigRunWS_V5_T2_500.csv", engine='pyarrow')
+data = pd.read_csv(r"E:\BigRun\2025\PD2\XGB_BigRunWS_T6D_v3_500.csv", engine='pyarrow')
 try:
     data.drop(columns=['PPT'], inplace=True)
 except:
@@ -163,6 +163,7 @@ data['Date'] = pd.to_datetime(data['Date'], format="%Y-%m-%d")
 data['Month'] = data['Date'].dt.month
 data['Year'] = data['Date'].dt.year
 data = data[data['Year'] < 2018]
+data = data[data['AHRR'] > 0.1]
 data.dropna(inplace=True)
 
 
@@ -193,6 +194,15 @@ data_A = all_data.loc[all_data['MAJORITY'].isin(category_A)]
 data_B = all_data.loc[all_data['MAJORITY'].isin(category_B)]
 data_C = all_data.loc[all_data['MAJORITY'].isin(category_C)]
 data_D = all_data.loc[~all_data['MAJORITY'].isin([21,22,23,24])]
+
+print('DATA A====================================================================================================================================================================================')
+rank_corr(data_A, hist_month_ave)
+print('DATA B====================================================================================================================================================================================')
+rank_corr(data_B, hist_month_ave)
+print('DATA C====================================================================================================================================================================================')
+rank_corr(data_C, hist_month_ave)
+print('DATA D====================================================================================================================================================================================')
+rank_corr(data_D, hist_month_ave)
 
 
 #

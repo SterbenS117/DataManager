@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def split_csv_into_parts(input_file, output_prefix, parts=12):
+def split_csv_into_parts(input_file, output_prefix, parts=15):
     # Read the input CSV file
     data = pd.read_csv(input_file)
 
@@ -27,6 +27,6 @@ def split_csv_into_parts(input_file, output_prefix, parts=12):
 
 
 # Example usage
-input_file = '/mnt/d/BigRun_NDVI/WS_3/BigRunWS_500_inst.csv'
-output_prefix = '/mnt/d/BigRun_NDVI/WS_3/BigRunWS_500_inst'
+input_file = r"E:\BigRun\2025_Big\BigRunWS_V6D_500_2-7-2025.csv"
+output_prefix = r"E:\BigRun\2025_Big\BigRunWS_V6_500"
 split_csv_into_parts(input_file, output_prefix)

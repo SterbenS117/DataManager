@@ -31,6 +31,6 @@ def average_csv_by_index(directory_path, output_filename):
 
 
 # Example usage
-directory_path = '/mnt/d/BigRun_NDVI/WS_4/sense/XGB/'  # Replace this with your directory path
-output_filename = 'XGB_BigRunWS_500_Shap.csv'  # Name of the output file
+directory_path = r'E:\BigRun\2025\PD2\XGB_2\sense'  # Replace this with your directory path
+output_filename = 'XGB_BigRunWS_PD6D_500_shap.csv'  # Name of the output file
 average_csv_by_index(directory_path, output_filename)

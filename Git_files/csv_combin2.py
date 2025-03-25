@@ -19,13 +19,13 @@ def merge_csv_files(directory_path, output_filename):
     combined_df = pd.concat(dataframes, ignore_index=True)
     print(combined_df)
     # Save the combined DataFrame to a new CSV file
-    combined_df.to_csv(os.path.join(directory_path, output_filename), index=False)
+    combined_df.to_csv(os.path.join(directory_path, output_filename), index=False, chunksize=100000)
     print(f"Combined CSV saved as {output_filename}")
     return combined_df
 
 # Example usage
-directory_path = '/mnt/e/BigRun/2/XGB/'  # Replace this with your directory path
-output_filename = '/mnt/e/BigRun/2/XGB_BigRunWS4_500.csv'  # Name of the output file
+directory_path = r'E:\BigRun\2025\PD2\GBR'  # Replace this with your directory path
+output_filename = r'E:\BigRun\2025\PD2\GBR_BigRunWS_T6D_500.csv'  # Name of the output file
 # directory_path = '/mnt/d/BigRun_NDVI/WS_4/New folder/'  # Replace this with your directory path
 # output_filename = '/mnt/d/BigRun_NDVI/WS_4/GBR_BigRunWS_500.csv'  # Name of the output file
 df = merge_csv_files(directory_path, output_filename)

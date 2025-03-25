@@ -6,6 +6,10 @@ import numpy as np
 np.set_printoptions(suppress=True,linewidth=500,threshold=500)
 pd.set_option('display.width', 400)
 pd.set_option('display.max_columns', 25)
+
+import warnings
+warnings.filterwarnings('ignore')
+
 def calculate_ubRMS(column1, column2):
     """
     Calculate the unbiased Root Mean Square (ubRMS) of two columns.
@@ -76,7 +80,7 @@ def create_correction_matrix(df):
 
     return corr_matrix
 
-def rank_corr(data):
+def rank_corr(data, cat):
     data.dropna(inplace=True)
 
     data['Date'] = pd.to_datetime(data['Date'], format="%Y-%m-%d")
@@ -121,17 +125,11 @@ def rank_corr(data):
     # d = data_t[['AHRR_A','SMERGE_A']].dropna()
     # x = d['AHRR_A']
     # y = d['SMERGE_A']
+    print(" ")
+    print(cat)
 
     # Calculate Spearman's rank correlation
     spearman_corr, spearman_p_value = spearmanr(x, y)
-    print(f"Spearman's rank correlation coefficient: {spearman_corr}")
-    print(f"Spearman's p-value: {spearman_p_value}")
-
-    # Calculate Kendall's tau correlation
-    kendall_corr, kendall_p_value = kendalltau(x, y)
-    print(f"Kendall's tau correlation coefficient: {kendall_corr}")
-    print(f"Kendall's p-value: {kendall_p_value}")
-    print('')
     interpret_correlation(spearman_corr, spearman_p_value, 'SMERGE_A')
 
     d = data_t.groupby(['Month', 'Year']).agg(avg_AHRR_A=('AHRR_A', 'mean'), avg_ML_A=('ML_A', 'mean')).reset_index()
@@ -141,14 +139,6 @@ def rank_corr(data):
 
     # Calculate Spearman's rank correlation
     spearman_corr, spearman_p_value = spearmanr(x, y)
-    print(f"Spearman's rank correlation coefficient: {spearman_corr}")
-    print(f"Spearman's p-value: {spearman_p_value}")
-
-    # Calculate Kendall's tau correlation
-    kendall_corr, kendall_p_value = kendalltau(x, y)
-    print(f"Kendall's tau correlation coefficient: {kendall_corr}")
-    print(f"Kendall's p-value: {kendall_p_value}")
-    print('')
     interpret_correlation(spearman_corr, spearman_p_value, 'ML_A')
 
 
@@ -161,7 +151,7 @@ landC_2019 = pd.read_csv(r"E:\BigRun\Land_Cover\grid_500_landcover2019.csv", eng
 
 #data = pd.read_csv(r"E:\share\BIgRun\Watershed_Cal\2\RF_BigRunWS4_500.csv", engine='pyarrow')
 #data = pd.read_csv(r"E:\share\BIgRun\Watershed_Cal\4\GBR_BigRunWS5_1_500.csv", engine='pyarrow')
-data = pd.read_csv(r"E:\BigRun\T3\GBR_BigRunWS_V6_T_500.csv", engine='pyarrow')
+data = pd.read_csv(r"E:\BigRun\T3\RF_BigRunWS_V6_T_500.csv", engine='pyarrow')
 try:
     data.drop(columns=['PPT'], inplace=True)
 except:
@@ -202,6 +192,11 @@ data_B = all_data.loc[all_data['MAJORITY'].isin(category_B)]
 data_C = all_data.loc[all_data['MAJORITY'].isin(category_C)]
 data_D = all_data.loc[~all_data['MAJORITY'].isin([21,22,23,24])]
 
+
+rank_corr(data_A, 'Cat_A')
+rank_corr(data_B, 'Cat_B')
+rank_corr(data_C, 'Cat_C')
+rank_corr(data_D, 'Cat_D')
 #
 #
 # corr = create_correction_matrix(data_t)
